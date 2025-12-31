@@ -84,7 +84,7 @@ import requests
 def main():
     print("Hello World!")
 
-if __name__ == __main__:
+if __name__ == __name__:
     main()
 ```
 
@@ -248,8 +248,8 @@ requests.get("https://github.com", verify=False)
 
 ```python
 proxies = {
-    "HTTP": "http://127.0.0.1:8080",
-    "HTTPS": "http://127.0.0.1:8080"
+    "http": "http://127.0.0.1:8080",
+    "https": "http://127.0.0.1:8080"
 }
 
 requests.get("https://github.com", proxies=proxies)
