@@ -117,7 +117,19 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from http import cookies
 
 # For getting command-line arguments
-import sys
+import argparse
+
+# For working with JDBC Java Drivers. NOTE: will need to set this up in an virtual venv
+import jaydebeapi
+```
+### Using the `argparse` library
+```python
+parser = argparse.ArgumentParser()
+parser.add_argument('--ip', help='IP Address', required=True)
+parser.add_argument('--user', help='User', required=True)
+parser.add_argument('--password', help='Password', required=True)
+parser.add_argument('--webserver', help='Path/to/webserver/directory', required=False)
+args = parser.parse_args()
 ```
 
 ### <a name='Usingtherequestslibrary'></a>Using the `requests` library
@@ -312,28 +324,18 @@ print("Body:\n", prepared_request.body)
 #### <a name='ServingfilesviaHTTP'></a>Serving files via HTTP
 
 ```python
-LHOST      = "10.0.0.1"
-WEB_PORT   = 8000
-JS_PAYLOAD = "<script>alert(1)</script>"
+def startWebServer():
+    webServerProcess = subprocess.Popen(["python3", "-m", "http.server", "80"],
+    cwd="/opt/OSWE-Exercises/webserver",              
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.STDOUT)
+    
+    print ("[+] Web Server Started")
+    return webServerProcess
 
-def start_web_server():
-    class MyHandler(BaseHTTPRequestHandler):
-        # Uncomment this method to suppress HTTP logs
-        # def log_message(self, format, *args):
-        #     return
-
-        def do_GET(self):
-            if self.path.endswith('/payload.js'):
-                self.send_response(200)
-                self.send_header("Content-Type", "application/javascript")
-                self.send_header("Content-Length", str(len(JS_PAYLOAD)))
-                self.end_headers()
-                self.wfile.write(JS_PAYLOAD.encode())
-            
-    httpd = HTTPServer((LHOST, WEB_PORT), MyHandler)
-    threading.Thread(target=httpd.serve_forever).start()
-
-start_web_server()
+def stopWebServer(webServerProcess):
+    webServerProcess.terminate()
+    print ("[+] Webserver Stopped")
 ```
 
 #### <a name='StealingHTTPcookies'></a>Stealing HTTP cookies
