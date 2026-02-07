@@ -133,6 +133,7 @@ parser.add_argument('--user', help='User', required=True)
 parser.add_argument('--password', help='Password', required=True)
 parser.add_argument('--webdir', help='Path/to/webserver/directory. default is /tmp', default='/tmp', required=False)
 parser.add_argument('-w','--webserverip', help='IP of the listening webserver, your local Kali IP.', required=True)
+parser.add_argument('-p','--port', help='Port to connect back to for the reverse shell.', required=True)
 args = parser.parse_args()
 ```
 
