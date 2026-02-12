@@ -332,6 +332,17 @@ print("Body:\n", prepared_request.body)
 
 ### <a name='Reusablecode'></a>Reusable code
 
+#### <a name='Regular Expressions'></a>Regular Expressions
+```python
+flagRegexPattern = r'<pre>\s*([^"\']+)\s*<\/pre>'
+flagMatch = re.search(flagRegexPattern, response.text)
+flag = flagMatch.group(1)
+
+//NOTE: This is a capture group: ([^"\']+) . This allows you to grab passwords, codes, flags, etc. 
+
+
+```
+
 #### <a name='WorkingWithJSON'></a>Working with JSON snippets
 ```python
 
