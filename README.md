@@ -119,11 +119,18 @@ from http import cookies
 # For getting command-line arguments
 import argparse
 
-#For file path joining
+# For file path joining
 import os
+
+# For Working with Dates and Times 
+from datetime import datetime
 
 # For working with JDBC Java Drivers. NOTE: will need to set this up in an virtual venv
 import jaydebeapi
+
+# Random other things that will sometimes come in handy
+import random
+import string
 ```
 ### Using the `argparse` library
 ```python
@@ -135,6 +142,12 @@ parser.add_argument('--webdir', help='Path/to/webserver/directory. default is /t
 parser.add_argument('-w','--webserverip', help='IP of the listening webserver, your local Kali IP.', required=True)
 parser.add_argument('-p','--port', help='Port to connect back to for the reverse shell.', required=True)
 args = parser.parse_args()
+```
+
+### Using Date/Time Formatting
+```python
+now = datetime.now()
+dateStr = now.strftime("%Y-%m-%d %H:%M:%S") #This can be formatted however you want
 ```
 
 ### <a name='Usingtherequestslibrary'></a>Using the `requests` library
